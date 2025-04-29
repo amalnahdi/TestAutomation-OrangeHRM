@@ -1,7 +1,7 @@
 @tag
 Feature: Login utilisateur sur  OrangeHRM
   En tant que utilisateur  je souhaite me  connecter et me  deconnecter de l application OrangeHRM
-
+ 
   @authentification
   Scenario: Je souhaite tester la page de la connexion de l application OrangeHRM avec des  identifiants valides
     Given Je me connecte sur l application   OrangeHRM
@@ -25,9 +25,7 @@ Feature: Login utilisateur sur  OrangeHRM
     When Je clique sur le bouton du menu déroulant dans le coin supérieur droit  
     And Je sélectionne l option "Logout"  
     Then Je suis redirigé vers la page de login  
-    
-    
-  
+ 
 
 
 # @tag

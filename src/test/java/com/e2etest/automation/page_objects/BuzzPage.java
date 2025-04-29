@@ -2,6 +2,8 @@ package com.e2etest.automation.page_objects;
 
 import java.time.Duration;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -14,58 +16,61 @@ import com.e2etest.automation.utils.Setup;
 
 
 public class BuzzPage {
-	   public BuzzPage() {
-	        PageFactory.initElements(Setup.getDriver(), this);
-	    }
-	WebDriverWait wait = new WebDriverWait(Setup.getDriver(), Duration.ofSeconds(3));
-	
-	@FindBy(xpath = "//h6[contains(@class, 'oxd-topbar-header-breadcrumb-module')]")
-	public static WebElement buzzTitle;
-	@FindBy( how= How.XPATH , using ="//a[@class='oxd-main-menu-item active']")
-	public static WebElement buzz  ;
+	private WebDriver driver;
+	 
 
-    @FindBy(how = How.XPATH, using = "//textarea[@placeholder=\"What's on your mind?\"]")
-    public static WebElement input;
+    @FindBy(xpath = "//span[normalize-space()='Buzz']")
+    private WebElement buzzTab;
 
-    @FindBy(how = How.XPATH, using = "//button[@type='submit']")
-    public static WebElement button;
+    @FindBy(xpath = "//textarea[contains(@placeholder,'mind')]")
+    private WebElement input;
 
-    @FindBy(how = How.XPATH, using = "//div[contains(@class,'oxd-toast--success')]")
-    public static WebElement toastSuccess;
-	
+    @FindBy(xpath = "//button[@type='submit']")
+    private WebElement postBtn;
+
+    @FindBy(xpath = "//p[@class='oxd-text oxd-text--p oxd-text--toast-message oxd-toast-content-text']")
+  
+    private WebElement toastMessage;
+
+    private WebDriverWait wait =
+        new WebDriverWait(Setup.getDriver(), Duration.ofSeconds(5));
+
     
+    public BuzzPage(WebDriver driver) {
+        this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        PageFactory.initElements(Setup.getDriver(), this); 
+    }
+    
+    
+    public BuzzPage() {
+        PageFactory.initElements(Setup.getDriver(), this);
+    }
+
     public void clickBuzz() {
-        wait.until(ExpectedConditions.elementToBeClickable(buzz));
-        buzz.click();
-
-	}
-    public void gotoURL () {
-		Setup.getDriver().get("https://opensource-demo.orangehrmlive.com/web/index.php/buzz/viewBuzz");
-		}
-public  boolean pageBuzz (String name ) {
-    wait.until(ExpectedConditions.visibilityOf(buzzTitle));
-    return buzzTitle.isDisplayed();
-}
-    public void waitChamp() {
-        wait.until(ExpectedConditions.visibilityOf(input));
+        wait.until(ExpectedConditions
+          .elementToBeClickable(buzzTab)).click();
     }
 
-    public void saisirMessage(String message) {
-    	waitChamp();
-        input.sendKeys(message);
+    public void clickInputField() {
+        wait.until(ExpectedConditions
+          .elementToBeClickable(input)).click();
     }
 
-    public void cliquerSurPost() {
-        wait.until(ExpectedConditions.elementToBeClickable(button));
-        button.click();
+    public void enterMessage(String msg) {
+        input.sendKeys(msg);
     }
 
-    public boolean verifierPopupSuccess() {
-        return wait.until(ExpectedConditions.visibilityOf(toastSuccess)).isDisplayed();
+    public void clickPost() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement postButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']")));
+        postButton.click();
     }
 
-    public boolean verifierTitrePage(String expectedTitle) {
-        wait.until(ExpectedConditions.visibilityOf(buzzTitle));
-        return buzzTitle.getText().equalsIgnoreCase(expectedTitle);
+    public boolean isSuccessToastDisplayed() {
+        // Wait for the <p> text to appear
+        return wait.until(ExpectedConditions
+          .visibilityOf(toastMessage))
+          .isDisplayed();
     }
 }

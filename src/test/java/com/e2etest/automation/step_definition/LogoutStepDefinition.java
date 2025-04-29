@@ -2,6 +2,7 @@ package com.e2etest.automation.step_definition;
 
 import java.time.Duration;
 
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -23,24 +24,29 @@ public class LogoutStepDefinition extends BasePage {
 	 driver = Setup.getDriver();
  }
 
+@Given("Je suis connectee et sur la page {string}")
+public void onDashboard(String title) {
+  Assert.assertTrue(logoutpage.isOnDashboard(title));
+}
 
- @Given("Je suis connecté et sur la page {string}")
- public void jeSuisConnectéEtSurLaPage(String string) {
- }
- @When("Je clique sur le bouton du menu déroulant dans le coin supérieur droit")
- public void clickUserDropdown() {
-    
- }
- @When("Je sélectionne l option {string}")
- public void clickLogoutOption(String string) {
+@When("Je clique sur le menu utilisateur")
+public void openUserMenu() {
+  logoutpage.clickUserDropdown();
+}
 
- }
- @Then("Je suis redirigé vers la page de login")
- public void isLoginPageDisplayed() {
+@When("Je selectionne l option {string}")
+public void chooseLogout(String option) {
+  logoutpage.clickLogoutOption(option);
+}
+
+@Then("Je suis redirigee vers la page de login")
+public void verifyLoginPage() {
+  Assert.assertTrue(logoutpage.isLoginPageDisplayed());
+}
 
  }
  
 
 
 
-}
+

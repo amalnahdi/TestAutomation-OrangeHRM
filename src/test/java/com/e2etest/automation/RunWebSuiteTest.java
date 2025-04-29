@@ -24,7 +24,7 @@ import static io.cucumber.junit.CucumberOptions.SnippetType.CAMELCASE;
  */
 @CucumberOptions(features = { "src/spec/features" }, plugin = { "pretty", "html:target/cucmber-report.html" },
 
-tags ="@tag2"  , 
+tags ="@post12"  , 
 
 // glue= {"com.e2etests.automation.step_definitions"},
 		monochrome = true, snippets = CAMELCASE
